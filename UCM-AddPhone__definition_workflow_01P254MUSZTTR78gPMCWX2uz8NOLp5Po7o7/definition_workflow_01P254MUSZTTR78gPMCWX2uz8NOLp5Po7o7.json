@@ -1,0 +1,218 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7",
+    "name": "UCM - Add Phone",
+    "title": "UCM - Add Phone",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Input JSON",
+          "type": "datatype.string",
+          "description": "Please refer to the CUCM AXL API Reference for all valid fields the schema supports. This input needs to be a JSON payload with one or more of the supported fields.\n\nExample:\n\n{\n\t\"name\": \"JABBERTEST\",\n\t\"sipProfileName\": \"Standard SIP Profile\",\n\t\"product\": \"CSF\",\n\t\"class\": \"Phone\",\n\t\"protocol\": \"SIP\",\n\t\"protocolSide\": \"User\",\n\t\"description\": \"This is a test phone.\",\n\t\"callingSearchSpaceName\": \"Internal\",\n\t\"devicePoolName\": \"Default\",\n\t\"mediaResourceListName\": \"xSYS-DC-MRGL-A\",\n\t\"securityProfileName\": \"xSYS-UNIVERSAL-DEVICE-TEMPLATE-OAUTH-PSP\"\n}",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01P254MUM7OV1606jkLUil0Br6Q3ystMGfw",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "output",
+          "name": "Output",
+          "type": "datatype.string",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01P254MUM7KSG3b7x8pMcAzkaT3BEmMTJlF",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "atomic_group": "Cisco Unified Communications Manager",
+        "is_atomic": true
+      },
+      "delete_workflow_instance": false,
+      "description": "Create a new phone via UCM's AXL API. Please update namespaces and SOAPAction Header based on the version \u0026 schema you're working with. \n\nSteps to use:\n1. Setup your UCM Target \u0026 Account Key as AXL Credential\n2. Provide a JSON input with one or more of the supported fields for the addPhone AXL method (refer to README on Git repo for steps on how to generate this)\n4. If the request is successful, the output of this atomic is the UID response string returned from UCM for the added phone\n5. If the request is not successful, the output contains the error message",
+      "display_name": "UCM - Add Phone",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01P3STH08I1NZ6szzBgY3sqM2M3zxzQdg96",
+        "name": "Convert Json to Xml",
+        "title": "Convert JSON Input to XML",
+        "type": "core.json2xml",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Convert JSON Input to XML",
+          "input_json": "$workflow.definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7.input.variable_workflow_01P254MUM7OV1606jkLUil0Br6Q3ystMGfw$",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01P254N46J90H5qkDDkmgMMfw10G8bQ7pMO",
+        "name": "HTTP Request",
+        "title": "AXL - addPhone",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "body": "\u003csoapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"http://www.cisco.com/AXL/API/10.5\"\u003e\n  \u003csoapenv:Header/\u003e\n  \u003csoapenv:Body\u003e\n    \u003cns:addPhone sequence=\"?\"\u003e\n      $activity.definition_activity_01P3STH08I1NZ6szzBgY3sqM2M3zxzQdg96.output.output_xml$\n    \u003c/ns:addPhone\u003e\n  \u003c/soapenv:Body\u003e\n\u003c/soapenv:Envelope\u003e",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": true,
+          "custom_headers": [
+            {
+              "name": "SOAPAction",
+              "value": "CUCM:DB ver=12.5 addPhone"
+            }
+          ],
+          "display_name": "AXL - addPhone",
+          "method": "POST",
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "use_workflow_target": true
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01P254N8CVKES6fNqCXq3s25KhNhtcuzMrj",
+        "name": "Condition Block",
+        "title": "Check if Successful",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Check if Successful",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01P254NCTT54601qQpC0j0dQio8hOGjKxzv",
+            "name": "Condition Branch",
+            "title": "Succeeded",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01P254N46J90H5qkDDkmgMMfw10G8bQ7pMO.output.succeeded$",
+                "operator": "eq",
+                "right_operand": true
+              },
+              "continue_on_failure": false,
+              "display_name": "Succeeded",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01P254NFAQ0EA0K5FoKnltDJIo3DfxvARHo",
+                "name": "XPath Query",
+                "title": "Parse XML Response",
+                "type": "core.xpathquery",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "display_name": "Parse XML Response",
+                  "input_xml": "$activity.definition_activity_01P254N46J90H5qkDDkmgMMfw10G8bQ7pMO.output.response_body$",
+                  "skip_execution": false,
+                  "xpath_queries": [
+                    {
+                      "xpath_query": "//return",
+                      "xpath_query_name": "response",
+                      "xpath_query_type": "string"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01P254NKG8T6X7J40AgFfFDeRaSm0hIPUAz",
+                "name": "Set Variables",
+                "title": "Set UUID Output",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "display_name": "Set UUID Output",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7.output.variable_workflow_01P254MUM7KSG3b7x8pMcAzkaT3BEmMTJlF$",
+                      "variable_value_new": "$activity.definition_activity_01P254NFAQ0EA0K5FoKnltDJIo3DfxvARHo.output.xpath_queries.response$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_01P254NUM8W4Y5Ic3ZWSepEkJlxtTEgSq2F",
+            "name": "Condition Branch",
+            "title": "Not Succeeded",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01P254N46J90H5qkDDkmgMMfw10G8bQ7pMO.output.succeeded$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "Not Succeeded",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01P254NWUKEQJ6eKAXCbMbRXw9iWcCi06Y9",
+                "name": "Set Variables",
+                "title": "Set Error Output",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "display_name": "Set Error Output",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7.output.variable_workflow_01P254MUM7KSG3b7x8pMcAzkaT3BEmMTJlF$",
+                      "variable_value_new": "$activity.definition_activity_01P254N46J90H5qkDDkmgMMfw10G8bQ7pMO.output.error.message$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  }
+}
