@@ -7,17 +7,17 @@
     "base_type": "workflow",
     "variables": [
       {
-        "schema_id": "datatype.string",
+        "schema_id": "datatype.number",
         "properties": {
-          "value": "",
+          "value": 12.5,
           "scope": "input",
-          "name": "Input JSON",
-          "type": "datatype.string",
-          "description": "Please refer to the CUCM AXL API Reference for all valid fields the schema supports. This input needs to be a JSON payload with one or more of the supported fields.\n\nExample:\n\n{\n\t\"name\": \"JABBERTEST\",\n\t\"sipProfileName\": \"Standard SIP Profile\",\n\t\"product\": \"CSF\",\n\t\"class\": \"Phone\",\n\t\"protocol\": \"SIP\",\n\t\"protocolSide\": \"User\",\n\t\"description\": \"This is a test phone.\",\n\t\"callingSearchSpaceName\": \"Internal\",\n\t\"devicePoolName\": \"Default\",\n\t\"mediaResourceListName\": \"xSYS-DC-MRGL-A\",\n\t\"securityProfileName\": \"xSYS-UNIVERSAL-DEVICE-TEMPLATE-OAUTH-PSP\"\n}",
-          "is_required": true,
+          "name": "Version",
+          "type": "datatype.number",
+          "description": "Version of CUCM/AXL Schema you're working with, ex: 11.5, 12.5, 14.0 etc. Must be a decimal value.",
+          "is_required": false,
           "is_invisible": false
         },
-        "unique_name": "variable_workflow_01P254MUM7OV1606jkLUil0Br6Q3ystMGfw",
+        "unique_name": "variable_workflow_01PFOTKW165IV0kTqyfNKNXsAt9ixL4d3eZ",
         "object_type": "variable_workflow"
       },
       {
@@ -31,6 +31,20 @@
           "is_invisible": false
         },
         "unique_name": "variable_workflow_01P254MUM7KSG3b7x8pMcAzkaT3BEmMTJlF",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Input JSON",
+          "type": "datatype.string",
+          "description": "Please refer to the CUCM AXL API Reference for all valid fields the schema supports. This input needs to be a JSON payload with one or more of the supported fields.\n\nExample:\n\n{\n  \"phone\": [\n    {\n      \"name\": \"JABBERTEST2\",\n      \"sipProfileName\": \"Standard SIP Profile\",\n      \"product\": \"Cisco Unified Client Services Framework\",\n      \"class\": \"Phone\",\n      \"protocol\": \"SIP\",\n      \"protocolSide\": \"User\",\n      \"description\": \"This is a test phone.\",\n      \"callingSearchSpaceName\": \"Internal\",\n      \"devicePoolName\": \"Default\",\n      \"mediaResourceListName\": \"xSYS-DC-MRGL-A\",\n      \"securityProfileName\": \"xSYS-UNIVERSAL-DEVICE-TEMPLATE-OAUTH-PSP\"\n    }\n  ]\n}",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01P254MUM7OV1606jkLUil0Br6Q3ystMGfw",
         "object_type": "variable_workflow"
       }
     ],
@@ -75,13 +89,13 @@
         "properties": {
           "action_timeout": 180,
           "allow_auto_redirect": true,
-          "body": "\u003csoapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"http://www.cisco.com/AXL/API/10.5\"\u003e\n  \u003csoapenv:Header/\u003e\n  \u003csoapenv:Body\u003e\n    \u003cns:addPhone sequence=\"?\"\u003e\n      $activity.definition_activity_01P3STH08I1NZ6szzBgY3sqM2M3zxzQdg96.output.output_xml$\n    \u003c/ns:addPhone\u003e\n  \u003c/soapenv:Body\u003e\n\u003c/soapenv:Envelope\u003e",
+          "body": "\u003csoapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"http://www.cisco.com/AXL/API/$workflow.definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7.input.variable_workflow_01PFOTKW165IV0kTqyfNKNXsAt9ixL4d3eZ$\"\u003e\n  \u003csoapenv:Header/\u003e\n  \u003csoapenv:Body\u003e\n    \u003cns:addPhone sequence=\"?\"\u003e\n      $activity.definition_activity_01P3STH08I1NZ6szzBgY3sqM2M3zxzQdg96.output.output_xml$\n    \u003c/ns:addPhone\u003e\n  \u003c/soapenv:Body\u003e\n\u003c/soapenv:Envelope\u003e",
           "continue_on_error_status_code": false,
           "continue_on_failure": true,
           "custom_headers": [
             {
               "name": "SOAPAction",
-              "value": "CUCM:DB ver=12.5 addPhone"
+              "value": "CUCM:DB ver=$workflow.definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7.input.variable_workflow_01PFOTKW165IV0kTqyfNKNXsAt9ixL4d3eZ$ addPhone"
             }
           ],
           "display_name": "AXL - addPhone",
