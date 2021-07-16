@@ -16,6 +16,17 @@ Steps to use:
 
 TIP: If you're doing a SELECT query, use 'Read Table from XML' w/ the XML output in your workflow to have a table object you can iterate over.
 
+---
+
+#### 2. [Add Phone](/UCM-AddPhone__definition_workflow_01P254MUSZTTR78gPMCWX2uz8NOLp5Po7o7/)
+
+> **Purpose:** Create a new phone via UCM's AXL API
+
+Steps to use:
+1. Setup your UCM Target & Account Key as AXL Credential
+2. Provide a JSON input with one or more of the supported fields for the addPhone AXL method (refer to README on Git repo for steps on how to generate this)
+3. If the request is successful, the output of this atomic is the UID response string returned from UCM for the added phone
+4. If the request is not successful, the output contains the error message
 
 ---
 
