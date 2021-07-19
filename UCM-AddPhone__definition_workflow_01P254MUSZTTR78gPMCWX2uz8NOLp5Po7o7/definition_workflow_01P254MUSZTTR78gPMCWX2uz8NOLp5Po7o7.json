@@ -7,6 +7,19 @@
     "base_type": "workflow",
     "variables": [
       {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "output",
+          "name": "Output",
+          "type": "datatype.string",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01P254MUM7KSG3b7x8pMcAzkaT3BEmMTJlF",
+        "object_type": "variable_workflow"
+      },
+      {
         "schema_id": "datatype.number",
         "properties": {
           "value": 12.5,
@@ -18,19 +31,6 @@
           "is_invisible": false
         },
         "unique_name": "variable_workflow_01PFOTKW165IV0kTqyfNKNXsAt9ixL4d3eZ",
-        "object_type": "variable_workflow"
-      },
-      {
-        "schema_id": "datatype.string",
-        "properties": {
-          "value": "",
-          "scope": "output",
-          "name": "Output",
-          "type": "datatype.string",
-          "is_required": false,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01P254MUM7KSG3b7x8pMcAzkaT3BEmMTJlF",
         "object_type": "variable_workflow"
       },
       {
@@ -54,7 +54,7 @@
         "is_atomic": true
       },
       "delete_workflow_instance": false,
-      "description": "Create a new phone via UCM's AXL API. Please update namespaces and SOAPAction Header based on the version \u0026 schema you're working with. \n\nSteps to use:\n1. Setup your UCM Target \u0026 Account Key as AXL Credential\n2. Provide a JSON input with one or more of the supported fields for the addPhone AXL method (refer to README on Git repo for steps on how to generate this)\n4. If the request is successful, the output of this atomic is the UID response string returned from UCM for the added phone\n5. If the request is not successful, the output contains the error message",
+      "description": "Create a new phone via UCM's AXL API. Please update namespaces and SOAPAction Header based on the version \u0026 schema you're working with. \n\nSteps to use:\n1. Setup your UCM Target \u0026 Account Key as AXL Credential\n2. Provide a JSON input with one or more of the supported fields for the addPhone AXL method (refer to README on Git repo for steps on how to generate this)\n3. If the request is successful, the output of this atomic is the UID response string returned from UCM for the added phone\n4. If the request is not successful, the output contains the error message",
       "display_name": "UCM - Add Phone",
       "runtime_user": {
         "target_default": true
