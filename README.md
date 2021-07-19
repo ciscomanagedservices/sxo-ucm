@@ -30,6 +30,19 @@ Steps to use:
 
 ---
 
+#### 3. [Get Phone](/UCM-GetPhone__definition_workflow_01PZZCV7XGGPX1kvQJbYuWXYT9oLo3vtc2a)
+
+> **Purpose:** Retrieve details of a phone via UCM's AXL API
+
+Steps to use:
+1. Setup your UCM Target & Account Key as AXL Credential
+2. Provide the Name or UUID of the phone to retrieve details. You must provide one of the two.
+3. You can also input a comma-separated list of what fields you'd like to have returned or leave the 'Fields to Return' input blank to return all fields
+4. If the request is successful, the output of this atomic is the XML response string returned from UCM for the searched
+5. If the request is not successful, the output contains the error message
+
+---
+
 Contributors:
 
 1. Aman Sardana (amasarda@cisco.com)
