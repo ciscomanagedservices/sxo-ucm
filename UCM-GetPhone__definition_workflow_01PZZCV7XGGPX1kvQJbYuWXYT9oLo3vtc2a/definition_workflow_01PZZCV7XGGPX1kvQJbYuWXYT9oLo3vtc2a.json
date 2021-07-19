@@ -38,20 +38,6 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "input",
-          "name": "UUID",
-          "type": "datatype.string",
-          "description": "UUID of the device - this must be specified, if Device Name isn't",
-          "is_required": false,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01PZZL6KY3ENP5ulY7hFwRapsAWsrCvJldM",
-        "object_type": "variable_workflow"
-      },
-      {
-        "schema_id": "datatype.string",
-        "properties": {
-          "value": "",
           "scope": "local",
           "name": "XML Fields to Return",
           "type": "datatype.string",
@@ -72,6 +58,20 @@
           "is_invisible": false
         },
         "unique_name": "variable_workflow_01Q008SELS9AS4Rsn0T0K3GIVyrS5bFnBfB",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "UUID",
+          "type": "datatype.string",
+          "description": "UUID of the device - this must be specified, if Device Name isn't",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01PZZL6KY3ENP5ulY7hFwRapsAWsrCvJldM",
         "object_type": "variable_workflow"
       },
       {
@@ -374,12 +374,12 @@
                   {
                     "unique_name": "definition_activity_01Q00VGGVFLKA1Qp0GeajGKKdWT49ri3PYs",
                     "name": "Set Variables",
-                    "title": "Set returnedTags to *",
+                    "title": "Set returnedTags",
                     "type": "core.set_multiple_variables",
                     "base_type": "activity",
                     "properties": {
                       "continue_on_failure": false,
-                      "display_name": "Set returnedTags to *",
+                      "display_name": "Set returnedTags",
                       "skip_execution": false,
                       "variables_to_update": [
                         {
