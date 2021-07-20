@@ -45,7 +45,7 @@ Steps to use:
 
 #### 4. [Run Terminal Command](/UCM-RunTerminalCommand__definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw)
 
-> **Purpose:** Run a Terminal (CLI) Command on UCM/UCOS.
+> **Purpose:** Run a Terminal (CLI) Command on UCM/UCOS
 
 Steps to use:
 1. Setup a Terminal Endpoint for your UC Application & Account Key as OS/Platform credential. Under 'Terminal Interaction Patterns (regex)', set the prompt to `admin:`.
