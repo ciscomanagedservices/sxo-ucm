@@ -1,0 +1,421 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw",
+    "name": "UCM - Run Terminal Command",
+    "title": "UCM - Run Terminal Command",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "List of Commands",
+          "type": "datatype.string",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q0W54ZTYH7U5j64c4XPiNjN3KDFMrFoHu",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "JSON of CLI Outputs",
+          "type": "datatype.string",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q0TUFDH2TK46iaQZq0y3g5PZGvQgRxiVW",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "tabletype_01Q0DL3C0V7QV2viCLhP5YaLeSLBXcb3dU6",
+        "properties": {
+          "scope": "output",
+          "name": "Commands \u0026 Outputs",
+          "type": "datatype.table",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q0DMGBT21RK5qJXByat4XjcdSYksd7Y2i",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "CLI Commands",
+          "type": "datatype.string",
+          "description": "Input a list of one or more non-SQL CLI commands (separated by new line). Use the 'UCM - Execute SQL Query' Atomic Action for SQL commands. For example:\n\nutils service list\nutils ntp server list\nshow cert list own",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q051QR75TCN0XhRidK6A586CE4uIhhMxX",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "atomic_group": "Cisco Unified Communications Manager",
+        "is_atomic": true
+      },
+      "delete_workflow_instance": false,
+      "description": "Run a Terminal (CLI) Command on UCM/UCOS.\n\nSteps to use:\n1. Setup a Terminal Endpoint for your UC Application \u0026 Account Key as OS/Platform credential. Under 'Terminal Interaction Patterns (regex)', set the prompt to 'admin:'.\n2. Provide a list of commands as input (one per line). It is recommended to send more than one command at once to avoid having to recreate separate SSH sessions.\n3. The output of this atomic action is a table with CLI Commands \u0026 their Outputs",
+      "display_name": "UCM - Run Terminal Command",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "terminal.endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01Q04Z5Y1EHEB40acXCsSPoDE1uYoBhfX1k",
+        "name": "Execute Terminal Command(s)",
+        "title": "Execute CLI Command(s)",
+        "type": "terminal.command",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "command_timeout": 60,
+          "commands": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.input.variable_workflow_01Q051QR75TCN0XhRidK6A586CE4uIhhMxX$",
+          "continue_on_failure": false,
+          "display_name": "Execute CLI Command(s)",
+          "merge_commands": false,
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "use_workflow_target": true
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0W4A14A2G01qGf6rIAyEItnVvOucvlFc",
+        "name": "Replace String",
+        "title": "Prep Commands List",
+        "type": "core.replacestring",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Prep Commands List",
+          "input_string": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.input.variable_workflow_01Q051QR75TCN0XhRidK6A586CE4uIhhMxX$",
+          "replace_list": [
+            {
+              "replaced_string": "\n",
+              "replacement_string": "','"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0W4RO6OD8V4AcdjP0BXR3uCM25jdIaXB",
+        "name": "Set Variables",
+        "title": "Set CLI Commands List",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Set CLI Commands List",
+          "skip_execution": false,
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.local.variable_workflow_01Q0W54ZTYH7U5j64c4XPiNjN3KDFMrFoHu$",
+              "variable_value_new": "['$activity.definition_activity_01Q0W4A14A2G01qGf6rIAyEItnVvOucvlFc.output.result_string$']"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0UIHYVFB7C3IwwU6w5Pt2D0xL0e81lM3",
+        "name": "Split String",
+        "title": "Split CLI Outputs",
+        "type": "core.splitstring",
+        "base_type": "activity",
+        "properties": {
+          "boundaries": [
+            {
+              "boundary": "admin:\\n?"
+            }
+          ],
+          "continue_on_failure": false,
+          "display_name": "Split CLI Outputs",
+          "input_string": "$activity.definition_activity_01Q04Z5Y1EHEB40acXCsSPoDE1uYoBhfX1k.output.response_body$",
+          "remove_empty": true,
+          "skip_execution": false,
+          "use_regexp": true
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0UZ5FBSFHR46RUVfpSRgFVW3WYKEMXhl",
+        "name": "For Each",
+        "title": "For Each Output",
+        "type": "logic.for_each",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "For Each Output",
+          "skip_execution": false,
+          "source_array": "$activity.definition_activity_01Q0UIHYVFB7C3IwwU6w5Pt2D0xL0e81lM3.output.parts$"
+        },
+        "object_type": "definition_activity",
+        "actions": [
+          {
+            "unique_name": "definition_activity_01Q0UZ5INWKH05poSvX2HJAKr9xUWxJ8qLK",
+            "name": "Add Row to Table",
+            "title": "Add CLI Output to Table",
+            "type": "core.addrowtotable",
+            "base_type": "activity",
+            "properties": {
+              "action_timeout": 180,
+              "continue_on_failure": false,
+              "display_name": "Add CLI Output to Table",
+              "input_table": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.output.variable_workflow_01Q0DMGBT21RK5qJXByat4XjcdSYksd7Y2i$",
+              "row": [
+                {
+                  "key": "Commands",
+                  "type": "string",
+                  "value": ""
+                },
+                {
+                  "key": "Outputs",
+                  "type": "string",
+                  "value": "$activity.definition_activity_01Q0UZ5FBSFHR46RUVfpSRgFVW3WYKEMXhl.input.source_array[@]$"
+                }
+              ],
+              "skip_execution": false
+            },
+            "object_type": "definition_activity"
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01Q0TTLCTEU8X1iJIYDbOfIphCnQPtryKLJ",
+        "name": "Select from Table",
+        "title": "Produce JSON of CLI Outputs from Table",
+        "type": "core.selectfromtable",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "columns": [
+            {
+              "column_name": "Commands",
+              "column_type": "string"
+            },
+            {
+              "column_name": "Outputs",
+              "column_type": "string"
+            }
+          ],
+          "continue_on_failure": false,
+          "display_name": "Produce JSON of CLI Outputs from Table",
+          "input_table": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.output.variable_workflow_01Q0DMGBT21RK5qJXByat4XjcdSYksd7Y2i$",
+          "number_of_rows": {
+            "all_rows": true,
+            "at_most": false
+          },
+          "persist_output": true,
+          "skip_execution": false,
+          "sorting": {
+            "no_sort": true,
+            "sort_by": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0TTPD6NQZD1X4Yq5oJkdSgd5E6zZ4KRv",
+        "name": "Set Variables",
+        "title": "Set Table JSON",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Set Table JSON",
+          "skip_execution": false,
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.local.variable_workflow_01Q0TUFDH2TK46iaQZq0y3g5PZGvQgRxiVW$",
+              "variable_value_new": "$activity.definition_activity_01Q0TTLCTEU8X1iJIYDbOfIphCnQPtryKLJ.output.response_body$"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0UA9Y4SDMO7fhpz33PWrWUG3uiuF2p3y",
+        "name": "Execute Python Script",
+        "title": "Repurpose JSON",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Repurpose JSON",
+          "script": "jsonoutputs = $workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.local.variable_workflow_01Q0TUFDH2TK46iaQZq0y3g5PZGvQgRxiVW$\ncmds = $workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.local.variable_workflow_01Q0W54ZTYH7U5j64c4XPiNjN3KDFMrFoHu$\n\ncount = 0\nfor cmd in jsonoutputs:\n    cmd['Commands'] = cmds[count]\n    count = count + 1\n\nprint(jsonoutputs)",
+          "script_queries": [
+            {
+              "script_query": "jsonoutputs",
+              "script_query_name": "myjson",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0Y49TDFTU938ilOJSRvOQVaLeZwtN6hI",
+        "name": "Replace String",
+        "title": "Escape \\\", Replace ' with \"",
+        "type": "core.replacestring",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Escape \\\", Replace ' with \"",
+          "input_string": "$activity.definition_activity_01Q0UA9Y4SDMO7fhpz33PWrWUG3uiuF2p3y.output.script_queries.myjson$",
+          "replace_list": [
+            {
+              "replaced_string": "\"",
+              "replacement_string": "\\\""
+            },
+            {
+              "replaced_string": "'",
+              "replacement_string": "\""
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0XYJW33H3K0x6DZHNhRKlK8ZR5ciM31b",
+        "name": "Read Table from JSON",
+        "title": "Rebuild Table",
+        "type": "corejava.read_table_from_json",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Rebuild Table",
+          "input_json": "$activity.definition_activity_01Q0Y49TDFTU938ilOJSRvOQVaLeZwtN6hI.output.result_string$",
+          "jsonpath_query": "$.",
+          "persist_output": true,
+          "populate_columns": false,
+          "skip_execution": false,
+          "table_columns": [
+            {
+              "column_name": "Commands",
+              "column_type": "string"
+            },
+            {
+              "column_name": "Outputs",
+              "column_type": "string"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q0YGN9Q7B4I0glZUNN4jxF4gBOxMg4bCt",
+        "name": "For Each",
+        "title": "For Each",
+        "type": "logic.for_each",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "For Each",
+          "skip_execution": false,
+          "source_array": "$activity.definition_activity_01Q0XYJW33H3K0x6DZHNhRKlK8ZR5ciM31b.output.read_table_from_json$"
+        },
+        "object_type": "definition_activity",
+        "actions": [
+          {
+            "unique_name": "definition_activity_01Q0YGVTK9O591x9RUX9J7tXq6ZiFkRxWBk",
+            "name": "Add Row to Table",
+            "title": "Add Rows to Output Table",
+            "type": "core.addrowtotable",
+            "base_type": "activity",
+            "properties": {
+              "action_timeout": 180,
+              "continue_on_failure": false,
+              "display_name": "Add Rows to Output Table",
+              "input_table": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.output.variable_workflow_01Q0DMGBT21RK5qJXByat4XjcdSYksd7Y2i$",
+              "row": [
+                {
+                  "key": "Commands",
+                  "type": "string",
+                  "value": "$activity.definition_activity_01Q0YGN9Q7B4I0glZUNN4jxF4gBOxMg4bCt.input.source_array[@].Commands$"
+                },
+                {
+                  "key": "Outputs",
+                  "type": "string",
+                  "value": "$activity.definition_activity_01Q0YGN9Q7B4I0glZUNN4jxF4gBOxMg4bCt.input.source_array[@].Outputs$"
+                }
+              ],
+              "skip_execution": false
+            },
+            "object_type": "definition_activity"
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01Q0YIX3HQZ0Y7cq131mezxw8X0HqVibFhX",
+        "name": "Delete from Table",
+        "title": "Clean Up Output Table",
+        "type": "core.deleterowfromtable",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "display_name": "Clean Up Output Table",
+          "input_table": "$workflow.definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw.output.variable_workflow_01Q0DMGBT21RK5qJXByat4XjcdSYksd7Y2i$",
+          "rows": {
+            "rows_matching_criteria": true,
+            "where_clause": "Commands == \"\""
+          },
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "table_types": {
+    "tabletype_01Q0DL3C0V7QV2viCLhP5YaLeSLBXcb3dU6": {
+      "unique_name": "tabletype_01Q0DL3C0V7QV2viCLhP5YaLeSLBXcb3dU6",
+      "data_type": "datatype.tabletype",
+      "display_name": "UCM - CLI Commands \u0026 Outputs",
+      "columns": [
+        {
+          "name": "Commands",
+          "title": "CLI Command",
+          "type": "string"
+        },
+        {
+          "name": "Outputs",
+          "title": "CLI Output",
+          "type": "string"
+        }
+      ],
+      "base_type": "datatype",
+      "object_type": "tabletype"
+    }
+  }
+}
