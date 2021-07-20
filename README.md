@@ -43,6 +43,17 @@ Steps to use:
 
 ---
 
+#### 4. [Run Terminal Command](/UCM-RunTerminalCommand__definition_workflow_01Q04YJXJPLUU7mb55fQorftOQGv4CRVtKw)
+
+> **Purpose:** Run a Terminal (CLI) Command on UCM/UCOS.
+
+Steps to use:
+1. Setup a Terminal Endpoint for your UC Application & Account Key as OS/Platform credential. Under 'Terminal Interaction Patterns (regex)', set the prompt to `admin:`.
+2. Provide a list of commands as input (one per line). It is recommended to send more than one command at once to avoid having to recreate separate SSH sessions.
+3. The output of this atomic action is a table with CLI Commands & their Outputs
+
+---
+
 Contributors:
 
 1. Aman Sardana (amasarda@cisco.com)
