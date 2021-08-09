@@ -4,7 +4,7 @@ Please update the namespaces and the SOAPAction Header based on the version & sc
 
 Resources: 
 - AXL API Schema Reference: https://developer.cisco.com/docs/axl-schema-reference/
-- Generating JSON from XML WIP!
+- Many of the atomic actions available in this repository expect a JSON input payload - please refer to the examples provided in the input descriptions before use. We're also working on making it easier for you to generate JSON payloads from the UCM XML schema - stay tuned!
 
 ### In this repository, you'll find the following atomics:
 
