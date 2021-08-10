@@ -1,5 +1,7 @@
 ## SecureX Orchestrator Atomic Actions for Cisco Unified Communications Manager (CUCM)
 
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/ciscomanagedservices/sxo-ucm)
+
 Please update the namespaces and the SOAPAction Header based on the version & schema you're working with. At present, the atomic actions are setup & tested to work with UCM v12.5.
 
 Resources: 
